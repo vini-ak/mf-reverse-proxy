@@ -1,0 +1,23 @@
+services:
+  host:
+    build: ./apps/host
+    container_name: host
+    expose:
+      - "80"
+
+  remote:
+    build: ./apps/remote
+    container_name: remote
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - host
+      - remote
